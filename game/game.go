@@ -57,10 +57,10 @@ func main() {
 		var random = rand.Intn(rowCount - 1)
 		fmt.Print(words[random].kata)
 		fmt.Print("\nPlease provide meaning\n")
-		text, _ := reader.ReadString('\n')
-		text = strings.TrimSuffix(text, "\n")
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSuffix(input, "\n")
 
-		if words[random].translation == text {
+		if strings.EqualFold(words[random].translation, input) {
 			correctStreak = correctStreak + 1
 			fmt.Print("\ncorrect!\n")
 			fmt.Print("\nStreak🔥:\n" + strconv.Itoa(correctStreak) + "\n")
