@@ -9,18 +9,21 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
 
+//word structure
 type Word struct {
-	kanji       string
 	kata        string
+	comment     string
 	translation string
 }
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
+	var correctStreak = 0
 
 	var url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRW71MEJqbKIsCL1EulKsV90D1CfVAk1f4xK6DH8occ6ZjQrbpVoV4ZVTfH91fiy4rk4SzRWbQrOjJb/pub?output=csv"
 	var filename = "translations.csv"
@@ -49,17 +52,23 @@ func main() {
 		rowCount = rowCount + 1
 	}
 
-	rand.Seed(time.Now().UTC().UnixNano())
-	var random = rand.Intn(rowCount - 1)
+	for {
+		rand.Seed(time.Now().UTC().UnixNano())
+		var random = rand.Intn(rowCount - 1)
+		fmt.Print(words[random].kata)
+		fmt.Print("\nPlease provide meaning\n")
+		text, _ := reader.ReadString('\n')
+		text = strings.TrimSuffix(text, "\n")
 
-	fmt.Print(words[random].kanji)
-	fmt.Print("\nPlease provide meaning 🔥 🔥 🔥\n")
-	text, _ := reader.ReadString('\n')
-	text = strings.TrimSuffix(text, "\n")
+		if words[random].translation == text {
+			correctStreak = correctStreak + 1
+			fmt.Print("\ncorrect!\n")
+			fmt.Print("\nStreak🔥:\n" + strconv.Itoa(correctStreak) + "\n")
 
-	if words[random].translation == text {
-		fmt.Print("\ncorrect!\n")
-	} else {
-		fmt.Print("\nnope!\n")
+		} else {
+			correctStreak = 0
+			fmt.Print("\nnope 💩!\n")
+			fmt.Print("\n" + words[random].translation + "\n")
+		}
 	}
 }
