@@ -60,7 +60,7 @@ func main() {
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSuffix(input, "\n")
 
-		if strings.EqualFold(words[random].translation, input) {
+		if strings.EqualFold(words[random].translation, input) || strings.Contains(words[random].translation, input) {
 			correctStreak = correctStreak + 1
 			fmt.Print("\ncorrect!\n")
 			fmt.Print("\nStreak🔥:\n" + strconv.Itoa(correctStreak) + "\n")
